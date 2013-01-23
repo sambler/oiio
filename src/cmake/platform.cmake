@@ -5,6 +5,14 @@ message (STATUS "CMAKE_SYSTEM_NAME = ${CMAKE_SYSTEM_NAME}")
 message (STATUS "CMAKE_SYSTEM_VERSION = ${CMAKE_SYSTEM_VERSION}")
 message (STATUS "CMAKE_SYSTEM_PROCESSOR = ${CMAKE_SYSTEM_PROCESSOR}")
 
+if (${CMAKE_SYSTEM_PROCESSOR} STREQUAL "i386")
+    if (NOT USE_TBB)
+        # to use gcc atomics we need cpu instructions only available
+        # with arch of i586 or higher
+        set (CXXFLAGS "${CXXFLAGS} -march=i586")
+    endif()
+endif()
+
 if (UNIX)
     message (STATUS "Unix! ${CMAKE_SYSTEM_NAME}")
     if (${CMAKE_SYSTEM_NAME} STREQUAL "Linux")
